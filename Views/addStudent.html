@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Felix Torto</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/theme.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <ul class="nav navbar-nav mr-auto">
+            <!-- Active class added to Home link since this is the current page -->
+            <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/htmlDemo">HTML Demo</a></li>
+            <li class="nav-item"><a class="nav-link" href="/students/add">Add Student</a></li>
+        </ul>
+    </nav>
+
+    <!-- Greeting Section -->
+    <section>
+        <h1>Welcome to My Website!</h1>
+        <p>Hello and welcome! I am Felix Torto, and I will be demonstrating HTML5 principles and techniques, as well as routing in Express on this site.</p>
+    </section>
+
+    <!-- Introduction Section -->
+    <section>
+        <h2>Website Overview</h2>
+        <p>This site consists of 3 static views (Home, About, HTML Demo) and 5 routes that supply data, including:</p>
+        <ul>
+            <li><a href="/students">All Students</a></li>
+            <li><a href="/students?course=3">Students by Course</a></li>
+            <li><a href="/student/2">A Single Student by Student Number</a></li>
+            <li><a href="/tas">All Managers (TAs)</a></li>
+            <li><a href="/courses">All Courses</a></li>
+        </ul>
+    </section>
+
+    <!-- HTML5 Section -->
+    <section>
+        <h2>HTML5 Principles</h2>
+        <p>This site utilizes HTML5, a markup language used for structuring and presenting content on the World Wide Web. It supports modern web standards and provides powerful capabilities for web development.</p>
+    </section>
+
+    <!-- Personal Info Section -->
+    <section>
+        <h2>About Me</h2>
+        <p>Student Name: Felix Torto</p>
+        <p>Student ID: 168365229</p>
+        <p>Program: Business Information Technology</p>
+    </section>
+
+    <!-- Form Section (Empty Main Section) -->
+    <main class="col-md-12">
+        <form method="POST" action="/students/add">
+            <fieldset>
+                <legend>Personal Information</legend>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>First Name:</label>
+                            <input class="form-control" name="firstName" type="text" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Last Name:</label>
+                            <input class="form-control" name="lastName" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input class="form-control" name="email" type="email" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Address (Street):</label>
+                            <input class="form-control" name="addressStreet" type="text" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Address (City):</label>
+                            <input class="form-control" name="addressCity" type="text" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Address (Province):</label>
+                            <input class="form-control" name="addressProvince" type="text" />
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Academic Information</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>College Employment:</label><br />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="collegeEmployment" id="TA" />
+                            <label class="form-check-label" for="TA">
+                                Teaching Assistant
+                            </label>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Enrollment Status:</label><br />
+                            <label class="checkbox-inline">
+                                <input type="radio" name="enrollmentStatus" value="Full Time" /> Full Time
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="enrollmentStatus" value="Part Time" /> Part Time
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="course">Enrolled in Course:</label>
+                            <select class="form-control" name="course" id="course">
+                                <option value="1">Relational Database Design and Implementation</option>
+                                <option value="2">Java Programming</option>
+                                <option value="3">Introduction to Cloud Computing</option>
+                                <option value="4">Database Administration and Management</option>
+                                <option value="5">Web Programming</option>
+                                <option value="6">Applied Capstone Project</option>
+                                <option value="7">Database Connectivity Using Java</option>
+                                <option value="8">Accessing Big Data</option>
+                                <option value="9">Datawarehousing</option>
+                                <option value="10">Security in Databases and Web Applications</option>
+                                <option value="11">Work Term Preparation (Work-Integrated Learning option only)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <hr />
+            <input type="submit" class="btn btn-primary float-right" value="Add Student" /><br /><br /><br />
+        </form>
+    </main>
+
+</body>
+</html>
