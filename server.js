@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  WEB700 – Assignment 03
+*  WEB700 – Assignment 05
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
 *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
@@ -149,7 +149,11 @@ collegeData.initialize()
 --@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 */
 // Existing code...
+
+/*
+3/22/2025
 var HTTP_PORT = process.env.PORT || 8080;
+const exphbs = require('ejs'); // Added EJS as required
 var express = require("express");
 var path = require("path");
 var collegeData = require("./modules/collegeData.js");
@@ -178,6 +182,66 @@ app.post("/students/add", (req, res) => {
     const studentData = req.body;
 
     // Call addStudent() from collegeData with the student data
+    collegeData.addStudent(studentData)
+        .then(() => {
+            // Redirect to /students to show the updated list
+            res.redirect("/students");
+        })
+        .catch((err) => {
+            console.error("Error adding student:", err);
+            res.status(500).send("There was an error adding the student.");
+        });
+});
+
+// Handle 404 - No Matching Route
+app.use((req, res) => {
+    res.status(404).send("Page Not Found");
+});
+
+// Initialize collegeData before starting the server
+collegeData.initialize()
+    .then(() => {
+        app.listen(HTTP_PORT, () => {
+            console.log("server listening on port: " + HTTP_PORT);
+        });
+    })
+    .catch((err) => {
+        console.log("Error initializing data: " + err);
+    });
+
+    -- 3/22/2025
+*/ 
+
+var HTTP_PORT = process.env.PORT || 8080;
+const exphbs = require('ejs'); // EJS required as exphbs per instructions
+var express = require("express");
+var path = require("path");
+var collegeData = require("./modules/collegeData.js");
+
+var app = express();
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs'); // Specifies EJS as the templating engine
+app.set('views', path.join(__dirname, 'views')); // Sets the views directory for EJS templates
+
+// Middleware to parse URL-encoded data (for form submissions)
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware to parse JSON data (for API requests)
+app.use(express.json());
+
+// Serve static files from the "public" folder (e.g., CSS, JS, images)
+app.use(express.static("public")); 
+
+// GET /students/add - Renders the addStudent.ejs template
+app.get("/students/add", (req, res) => {
+    res.render('addStudent'); // Renders views/addStudent.ejs (no need for .ejs extension)
+});
+
+// POST /students/add - Handles form submission to add a new student
+app.post("/students/add", (req, res) => {
+    const studentData = req.body;
+
     collegeData.addStudent(studentData)
         .then(() => {
             // Redirect to /students to show the updated list
