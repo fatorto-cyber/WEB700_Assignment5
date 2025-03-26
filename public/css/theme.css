@@ -3,108 +3,24 @@
 /* ============================= */
 
 /* Import Google Fonts */
-/* Ensure the selected font is loaded for use */
-@import url('https://fonts.googleapis.com/css2?family=YourChosenFont&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 /* ============================= */
 /* Global Styles */
 /* ============================= */
-/* Apply background styles, including gradients or solid colors */
-/* Set default font family and text color */
-
-body, html {
-    background: linear-gradient(to right, #color1, #color2);
-    font-family: 'YourChosenFont', sans-serif;
-    color: #333;
-    overflow: auto;
-}
-
-/* ============================= */
-/* Navigation Bar Styles */
-/* ============================= */
-/* Style navbar background, text, and hover effects */
-
-.navbar {
-    background-color: #yourColor;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* ============================= */
-/* Navigation Link Styles */
-/* ============================= */
-/* Customize font, text color, and hover effects */
-
-.nav-link {
-    color: #yourColor;
-}
-
-.nav-link:hover {
-    color: #hoverColor;
-    text-decoration: underline;
-}
-
-/* ============================= */
-/* Button Styles */
-/* ============================= */
-/* Style primary buttons and add hover effects */
-
-.btn-primary {
-    background-color: #yourColor;
-    border: none;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.btn-primary:hover {
-    background-color: #hoverColor;
-}
-
-/* ============================= */
-/* Table Styles */
-/* ============================= */
-/* Alternate row background colors for better readability */
-
-table tr:nth-child(odd) {
-    background-color: #lightColor;
-}
-
-/* ============================= */
-/* Heading Styles */
-/* ============================= */
-/* Style all heading elements with custom fonts and shadows */
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'YourChosenFont', sans-serif;
-    color: #yourColor;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* ============================= */
-/* Form Styles */
-/* ============================= */
-/* Customize form fieldsets, labels, and inputs */
-
-legend {
-    font-family: 'YourChosenFont', sans-serif;
-    font-size: 1.2rem;
-    padding: 5px;
-    color: #yourColor;
-}
-
-
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-/* Apply full-page gradient background */
 body, html {
     height: 100%;
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(to bottom right, #4facfe, #00f2fe);
     overflow: auto;
+    color: #333;
 }
 
-/* Navigation Bar */
-nav {
+/* ============================= */
+/* Navigation Bar Styles */
+/* ============================= */
+.navbar {
     background: linear-gradient(to right, #2c3e50, #4ca1af);
     padding: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
@@ -133,16 +49,9 @@ nav {
     color: #ffcc00;
 }
 
-/* Sections Styling */
-section {
-    margin: 20px;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Primary Button */
+/* ============================= */
+/* Button Styles */
+/* ============================= */
 .btn-primary {
     background: #007bff;
     color: white;
@@ -159,7 +68,9 @@ section {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Table Styling */
+/* ============================= */
+/* Table Styles */
+/* ============================= */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -175,14 +86,18 @@ tr:nth-child(odd) {
     background: #f2f2f2;
 }
 
-/* Headings */
+/* ============================= */
+/* Heading Styles */
+/* ============================= */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
     color: #333;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+/* ============================= */
 /* Links */
+/* ============================= */
 a {
     color: #007bff;
     text-decoration: none;
@@ -193,7 +108,9 @@ a:hover {
     color: #ff6600;
 }
 
-/* Fieldset Legends */
+/* ============================= */
+/* Form Styles */
+/* ============================= */
 legend {
     font-size: 18px;
     font-weight: 600;
@@ -201,86 +118,3 @@ legend {
     color: #4a4a4a;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
-
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap');
-
-/* General Styles */
-body, html {
-    height: 100%;
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #c2b5e5, #6d5fa6);
-    color: #333;
-}
-
-/* Navigation Bar */
-.navbar {
-    background-color: #ede7f6 !important;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.navbar-brand {
-    font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: #3a2d71 !important;
-}
-
-.navbar-nav .nav-link {
-    font-size: 1rem;
-    color: #3a2d71 !important;
-    font-weight: 500;
-}
-
-.navbar-nav .nav-item.active .nav-link {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-/* Form Section */
-main {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px auto;
-    max-width: 900px;
-}
-
-h2 {
-    font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    color: #3a2d71;
-}
-
-/* Form Fields */
-.form-group label {
-    font-weight: bold;
-}
-
-input[type="text"], input[type="email"], select {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-/* Button */
-.btn-primary {
-    background-color: #3a2d71;
-    color: white;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    background-color: #2e255a;
-}
-
-/* Override active nav link color 
-.navbar-nav .nav-item.active .nav-link {
-    color: #007bff !important; /* Bootstrap blue color */

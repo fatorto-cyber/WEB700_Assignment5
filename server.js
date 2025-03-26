@@ -1,270 +1,79 @@
-/*********************************************************************************
-*  WEB700 – Assignment 05
-*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part 
-*  of this assignment has been copied manually or electronically from any other source 
-*  (including 3rd party web sites) or distributed to other students.
-* 
-*  Name: _FELIX A TORTO_ Student ID: 168365229  Date: __2025_02_14_
-*
-********************************************************************************/ 
+const express = require("express");
+const path = require("path");
+const collegeData = require("./modules/collegeData.js");
 
+const app = express();
+const HTTP_PORT = process.env.PORT || 8080;
 
-/*var HTTP_PORT = process.env.PORT || 8080;
-var express = require("express");
-var app = express();
+// Set EJS as the view engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-// setup a 'route' to listen on the default url path
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
-
-// setup http server to listen on HTTP_PORT
-app.listen(HTTP_PORT, ()=>{console.log("server listening on port: " + HTTP_PORT)});
-
----**************************************************************************************--
-
-var HTTP_PORT = process.env.PORT || 8080;
-var express = require("express");
-var path = require("path");
-var collegeData = require("./modules/collegeData.js");
-
-
-
-var app = express();
-
-// Middleware to parse URL-encoded data (for form submissions)
+// Middleware for parsing form data & JSON
 app.use(express.urlencoded({ extended: true }));
-
-// Middleware to parse JSON data (for API requests)
 app.use(express.json());
 
-// Serve static files from the "public" folder
-app.use(express.static("public")); 
-// GET /students - Returns all students or students by course
+// Serve static files from the "public" directory
+app.use(express.static("public"));
+
+// Home Route
+app.get("/", (req, res) => res.render("home"));
+
+// About Page - Includes Student Info
+app.get("/about", (req, res) => {
+    res.render("about", { 
+        name: "Felix Torto", 
+        studentID: "168365229" 
+    });
+});
+
+// HTML Demo Page
+app.get("/htmlDemo", (req, res) => res.render("htmlDemo"));
+
+// Fetch All Students or by Course
 app.get("/students", (req, res) => {
     if (req.query.course) {
         collegeData.getStudentsByCourse(req.query.course)
-            .then((students) => res.json(students))
-            .catch(() => res.json({ message: "no results" }));
+            .then(data => res.render("students", { students: data }))
+            .catch(() => res.render("students", { students: [] }));
     } else {
         collegeData.getAllStudents()
-            .then((students) => res.json(students))
-            .catch(() => res.json({ message: "no results" }));
+            .then(data => res.render("students", { students: data }))
+            .catch(() => res.render("students", { students: [] }));
     }
 });
 
-// GET /tas - Returns all TAs
-app.get("/tas", (req, res) => {
-    collegeData.getTAs()
-        .then((tas) => res.json(tas))
-        .catch(() => res.json({ message: "no results" }));
+// Render "Add Student" Form
+app.get("/students/add", (req, res) => res.render("addStudent"));
+
+// Handle "Add Student" Form Submission
+app.post("/students/add", (req, res) => {
+    collegeData.addStudent(req.body)
+        .then(() => res.redirect("/students"))
+        .catch(err => {
+            console.error("Error adding student:", err);
+            res.status(500).send("There was an error adding the student.");
+        });
 });
 
-// GET /courses - Returns all courses
-app.get("/courses", (req, res) => {
-    collegeData.getCourses()
-        .then((courses) => res.json(courses))
-        .catch(() => res.json({ message: "no results" }));
-});
-
-// GET /student/:num - Returns a student by student number
+// Fetch Student by Student Number
 app.get("/student/:num", (req, res) => {
     collegeData.getStudentByNum(req.params.num)
-        .then((student) => res.json(student))
-        .catch(() => res.json({ message: "no results" }));
-});
-
-// GET / - Returns home.html
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/home.html"));
-});
-
-// GET /about - Returns about.html
-app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/about.html"));
-});
-
-// GET /htmlDemo - Returns htmlDemo.html
-app.get("/htmlDemo", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/htmlDemo.html"));
+        .then(student => res.render("studentDetails", { student }))
+        .catch(() => res.render("studentDetails", { student: null }));
 });
 
 // Handle 404 - No Matching Route
 app.use((req, res) => {
-    res.status(404).send("Page Not Found");
+    res.status(404).render("404"); // Ensure you have a `404.ejs` file in `views`
 });
 
-// Initialize collegeData before starting the server
+// Start Server After Initializing Data
 collegeData.initialize()
     .then(() => {
-        app.listen(HTTP_PORT, () => {
-            console.log("server listening on port: " + HTTP_PORT);
-        });
+        app.listen(HTTP_PORT, () => console.log(`Server listening on port ${HTTP_PORT}`));
     })
-    .catch((err) => {
-        console.log("Error initializing data: " + err);
+    .catch(err => {
+        console.error("Initialization error:", err);
     });
 
- --****************************************************************--
----@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// Existing code...
-var HTTP_PORT = process.env.PORT || 8080;
-var express = require("express");
-var path = require("path");
-var collegeData = require("./modules/collegeData.js");
-
-var app = express();
-
-// Middleware to parse URL-encoded data (for form submissions)
-app.use(express.urlencoded({ extended: true }));
-
-// Middleware to parse JSON data (for API requests)
-app.use(express.json());
-
-// Serve static files from the "public" folder
-app.use(express.static("public")); 
-
-// Existing routes...
-
-// GET /students/add - Returns addStudent.html
-app.get("/students/add", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/addStudent.html"));
-});
-
-// Handle 404 - No Matching Route
-app.use((req, res) => {
-    res.status(404).send("Page Not Found");
-});
-
-// Initialize collegeData before starting the server
-collegeData.initialize()
-    .then(() => {
-        app.listen(HTTP_PORT, () => {
-            console.log("server listening on port: " + HTTP_PORT);
-        });
-    })
-    .catch((err) => {
-        console.log("Error initializing data: " + err);
-    });
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-*/
-// Existing code...
-
-/*
-3/22/2025
-var HTTP_PORT = process.env.PORT || 8080;
-const exphbs = require('ejs'); // Added EJS as required
-var express = require("express");
-var path = require("path");
-var collegeData = require("./modules/collegeData.js");
-
-var app = express();
-
-// Middleware to parse URL-encoded data (for form submissions)
-app.use(express.urlencoded({ extended: true }));
-
-// Middleware to parse JSON data (for API requests)
-app.use(express.json());
-
-// Serve static files from the "public" folder
-app.use(express.static("public")); 
-
-// Existing routes...
-
-// GET /students/add - Returns addStudent.html
-app.get("/students/add", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/addStudent.html"));
-});
-
-// POST /students/add - Handles form submission to add a new student
-app.post("/students/add", (req, res) => {
-    // Assuming the form sends student data in the body of the request
-    const studentData = req.body;
-
-    // Call addStudent() from collegeData with the student data
-    collegeData.addStudent(studentData)
-        .then(() => {
-            // Redirect to /students to show the updated list
-            res.redirect("/students");
-        })
-        .catch((err) => {
-            console.error("Error adding student:", err);
-            res.status(500).send("There was an error adding the student.");
-        });
-});
-
-// Handle 404 - No Matching Route
-app.use((req, res) => {
-    res.status(404).send("Page Not Found");
-});
-
-// Initialize collegeData before starting the server
-collegeData.initialize()
-    .then(() => {
-        app.listen(HTTP_PORT, () => {
-            console.log("server listening on port: " + HTTP_PORT);
-        });
-    })
-    .catch((err) => {
-        console.log("Error initializing data: " + err);
-    });
-
-    -- 3/22/2025
-*/ 
-
-var HTTP_PORT = process.env.PORT || 8080;
-const exphbs = require('ejs'); // EJS required as exphbs per instructions
-var express = require("express");
-var path = require("path");
-var collegeData = require("./modules/collegeData.js");
-
-var app = express();
-
-// Set EJS as the view engine
-app.set('view engine', 'ejs'); // Specifies EJS as the templating engine
-app.set('views', path.join(__dirname, 'views')); // Sets the views directory for EJS templates
-
-// Middleware to parse URL-encoded data (for form submissions)
-app.use(express.urlencoded({ extended: true }));
-
-// Middleware to parse JSON data (for API requests)
-app.use(express.json());
-
-// Serve static files from the "public" folder (e.g., CSS, JS, images)
-app.use(express.static("public")); 
-
-// GET /students/add - Renders the addStudent.ejs template
-app.get("/students/add", (req, res) => {
-    res.render('addStudent'); // Renders views/addStudent.ejs (no need for .ejs extension)
-});
-
-// POST /students/add - Handles form submission to add a new student
-app.post("/students/add", (req, res) => {
-    const studentData = req.body;
-
-    collegeData.addStudent(studentData)
-        .then(() => {
-            // Redirect to /students to show the updated list
-            res.redirect("/students");
-        })
-        .catch((err) => {
-            console.error("Error adding student:", err);
-            res.status(500).send("There was an error adding the student.");
-        });
-});
-
-// Handle 404 - No Matching Route
-app.use((req, res) => {
-    res.status(404).send("Page Not Found");
-});
-
-// Initialize collegeData before starting the server
-collegeData.initialize()
-    .then(() => {
-        app.listen(HTTP_PORT, () => {
-            console.log("server listening on port: " + HTTP_PORT);
-        });
-    })
-    .catch((err) => {
-        console.log("Error initializing data: " + err);
-    });
