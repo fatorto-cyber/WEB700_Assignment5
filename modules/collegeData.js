@@ -1,4 +1,3 @@
-// collegeData.js - Corrected Version
 const fs = require("fs");
 
 class Data {
@@ -13,6 +12,7 @@ let dataCollection = null;
 // Initialize Function
 module.exports.initialize = () => {
     return new Promise((resolve, reject) => {
+        // Read and parse students.json
         fs.readFile("./data/students.json", "utf8", (err, studentData) => {
             if (err) {
                 reject("Unable to read students.json");
@@ -20,12 +20,14 @@ module.exports.initialize = () => {
             }
             const students = JSON.parse(studentData);
 
+            // Read and parse courses.json
             fs.readFile("./data/courses.json", "utf8", (err, courseData) => {
                 if (err) {
                     reject("Unable to read courses.json");
                     return;
                 }
                 const courses = JSON.parse(courseData);
+                // Store the parsed data in the collection
                 dataCollection = new Data(students, courses);
                 resolve();
             });
@@ -44,7 +46,7 @@ module.exports.getAllStudents = () => {
     });
 };
 
-// Retrieve TAs
+// Retrieve TAs (Teaching Assistants)
 module.exports.getTAs = () => {
     return new Promise((resolve, reject) => {
         const TAs = dataCollection.students.filter(student => student.TA);
@@ -70,7 +72,7 @@ module.exports.getCourses = () => {
 // Get students by course
 module.exports.getStudentsByCourse = (course) => {
     return new Promise((resolve, reject) => {
-        let filteredStudents = dataCollection.students.filter(student => student.course == course);
+        let filteredStudents = dataCollection.students.filter(student => student.course === course);
         if (filteredStudents.length > 0) {
             resolve(filteredStudents);
         } else {
@@ -82,7 +84,7 @@ module.exports.getStudentsByCourse = (course) => {
 // Get student by student number
 module.exports.getStudentByNum = (num) => {
     return new Promise((resolve, reject) => {
-        let student = dataCollection.students.find(student => student.studentNum == num);
+        let student = dataCollection.students.find(student => student.studentNum === num);
         if (student) {
             resolve(student);
         } else {
@@ -90,3 +92,4 @@ module.exports.getStudentByNum = (num) => {
         }
     });
 };
+
