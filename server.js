@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const collegeData = require("./modules/collegeData.js");
-const ejs = require('ejs');
 
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
@@ -17,28 +16,10 @@ app.use(express.json());
 // Serve static files from the "public" directory
 app.use(express.static("public"));
 
-// Middleware for setting the active route
-app.use(function(req, res, next) {
-    let route = req.path.substring(1);
-    app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
-    next();
+// HTML Demo Page - Ensure this is above other routes
+app.get("/htmlDemo", (req, res) => {
+    res.render("htmlDemo");  // Render EJS for HTML demo page
 });
-
-// Custom EJS Helpers for Navigation and Equality Check
-ejs.locals = {
-    navLink: function(url, options) {
-        return '<li' + ((url == app.locals.activeRoute) ? ' class="nav-item active"' : ' class="nav-item"') + '><a class="nav-link" href="' + url + '">' + options.fn(this) + '</a></li>';
-    },
-    equal: function(lvalue, rvalue, options) {
-        if (arguments.length < 3)
-            throw new Error("Ejs Helper equal needs 2 parameters");
-        if (lvalue != rvalue) {
-            return options.inverse(this);
-        } else {
-            return options.fn(this);
-        }
-    }
-};
 
 // Home Route
 app.get("/", (req, res) => res.render("home"));
@@ -51,20 +32,24 @@ app.get("/about", (req, res) => {
     });
 });
 
-// HTML Demo Page
-app.get("/htmlDemo", (req, res) => res.render("htmlDemo"));
-
 // Fetch All Students or by Course
 app.get("/students", (req, res) => {
     if (req.query.course) {
         collegeData.getStudentsByCourse(req.query.course)
             .then(data => res.render("students", { students: data }))
-            .catch(() => res.render("students", { students: [], message: "No students found for the selected course" }));
+            .catch(() => res.render("students", { students: [] }));
     } else {
         collegeData.getAllStudents()
             .then(data => res.render("students", { students: data }))
-            .catch(() => res.render("students", { students: [], message: "No students available" }));
+            .catch(() => res.render("students", { students: [] }));
     }
+});
+
+// Fetch All Courses
+app.get("/courses", (req, res) => {
+    collegeData.getCourses()
+        .then(data => res.render("courses", { courses: data }))
+        .catch(() => res.render("courses", { message: "No results returned" }));
 });
 
 // Render "Add Student" Form
