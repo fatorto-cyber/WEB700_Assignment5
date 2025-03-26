@@ -4,57 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background: #fff;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-        }
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            text-decoration: none;
-            color: white;
-            background: #007bff;
-            padding: 8px 12px;
-            border-radius: 5px;
-        }
-        a:hover {
-            background: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/theme.css"> <!-- Link to your Bootstrap or custom CSS -->
 </head>
 <body>
-    <h1>Students List</h1>
+    <div class="container">
+        <h2>Students</h2>
+        <hr />
 
-    <% if (students && students.length > 0) { %>
-        <ul>
-            <% students.forEach(student => { %>
-                <li><strong>Name:</strong> <%= student.firstName %> <%= student.lastName %> | 
-                    <strong>Course:</strong> <%= student.course %>
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No students found.</p>
-    <% } %>
-
-    <a href="/students/add">Add a Student</a>
-    <a href="/">Back to Home</a>
+        <!-- Table for displaying student data -->
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Student Num</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Course</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (students && students.length > 0) { %>
+                        <% students.forEach(student => { %>
+                            <tr>
+                                <td><%= student.studentNum %></td>
+                                <td><a href="/student/<%= student.studentNum %>"><%= student.firstName %> <%= student.lastName %></a></td>
+                                <td><a href="mailto:<%= student.email %>"><%= student.email %></a></td>
+                                <td><%= student.addressStreet %>, <%= student.addressCity %>, <%= student.addressProvince %></td>
+                                <td><%= student.status %></td>
+                                <td><a href="/students?course=<%= student.course %>"><%= student.course %></a></td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <strong><%= message || "No students available" %></strong>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        
+        <a href="/students/add" class="btn btn-primary">Add a Student</a>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
 </body>
 </html>
