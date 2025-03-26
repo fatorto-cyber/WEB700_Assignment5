@@ -93,3 +93,14 @@ module.exports.getStudentByNum = (num) => {
     });
 };
 
+// Get course by courseId
+module.exports.getCourseById = (id) => {
+    return new Promise((resolve, reject) => {
+        let course = dataCollection.courses.find(course => course.courseId === parseInt(id));
+        if (course) {
+            resolve(course);
+        } else {
+            reject("Course not found");
+        }
+    });
+};

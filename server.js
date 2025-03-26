@@ -18,7 +18,7 @@ app.use(express.static("public"));
 
 // HTML Demo Page - Ensure this is above other routes
 app.get("/htmlDemo", (req, res) => {
-    res.render("htmlDemo");  
+    res.render("htmlDemo");
 });
 
 // Home Route
@@ -26,9 +26,9 @@ app.get("/", (req, res) => res.render("home"));
 
 // About Page - Includes Student Info
 app.get("/about", (req, res) => {
-    res.render("about", { 
-        name: "Felix Torto", 
-        studentID: "168365229" 
+    res.render("about", {
+        name: "Felix Torto",
+        studentID: "168365229"
     });
 });
 
@@ -55,16 +55,11 @@ app.get("/courses", (req, res) => {
 // New Route: Fetch a Course by ID
 app.get("/course/:id", (req, res) => {
     const courseId = parseInt(req.params.id); // Convert to number
-    collegeData.getCourses()
-        .then(courses => {
-            const course = courses.find(c => c.courseId === courseId);
-            if (course) {
-                res.render("courseDetails", { course }); // Create `courseDetails.ejs`
-            } else {
-                res.status(404).send("Course not found");
-            }
+    collegeData.getCourseById(courseId)
+        .then(course => {
+            res.render("course", { course }); // Render the `course.ejs` view
         })
-        .catch(() => res.status(500).send("Unable to fetch course details"));
+        .catch(() => res.status(404).send("Course not found"));
 });
 
 // Render "Add Student" Form
@@ -89,7 +84,7 @@ app.get("/student/:num", (req, res) => {
 
 // Handle 404 - No Matching Route
 app.use((req, res) => {
-    res.status(404).render("404"); 
+    res.status(404).render("404"); // Ensure you have a `404.ejs` file in `views`
 });
 
 // Start Server After Initializing Data
