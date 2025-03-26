@@ -41,7 +41,7 @@ app.get("/students", (req, res) => {
     } else {
         collegeData.getAllStudents()
             .then(data => res.render("students", { students: data }))
-            .catch(() => res.render("students", { students: [] }));
+            .catch(() => res.render("students", { message: "No results returned", students: [] }));
     }
 });
 
@@ -52,39 +52,45 @@ app.get("/courses", (req, res) => {
         .catch(() => res.render("courses", { message: "No results returned" }));
 });
 
-// New Route: Fetch a Course by ID
+// Fetch a Course by ID
 app.get("/course/:id", (req, res) => {
-    const courseId = parseInt(req.params.id); // Convert to number
+    const courseId = parseInt(req.params.id); 
     collegeData.getCourseById(courseId)
         .then(course => {
-            res.render("course", { course }); // Render the `course.ejs` view
+            res.render("course", { course });
         })
         .catch(() => res.status(404).send("Course not found"));
 });
 
-// Render "Add Student" Form
-app.get("/students/add", (req, res) => res.render("addStudent"));
-
-// Handle "Add Student" Form Submission
-app.post("/students/add", (req, res) => {
-    collegeData.addStudent(req.body)
-        .then(() => res.redirect("/students"))
-        .catch(err => {
-            console.error("Error adding student:", err);
-            res.status(500).send("There was an error adding the student.");
-        });
+// Fetch Student by Student Number and Render Update Form
+app.get("/student/:num", (req, res) => {
+    const studentNum = req.params.num;
+    collegeData.getStudentByNum(studentNum)
+        .then(student => {
+            collegeData.getCourses()
+                .then(courses => {
+                    res.render("student", { student, courses });
+                })
+                .catch(err => {
+                    res.status(500).send("Error fetching courses.");
+                });
+        })
+        .catch(() => res.render("student", { student: null }));
 });
 
-// Fetch Student by Student Number
-app.get("/student/:num", (req, res) => {
-    collegeData.getStudentByNum(req.params.num)
-        .then(student => res.render("studentDetails", { student }))
-        .catch(() => res.render("studentDetails", { student: null }));
+// Handle Student Update
+app.post("/student/update", (req, res) => {
+    collegeData.updateStudent(req.body)
+        .then(() => res.redirect("/students"))
+        .catch(err => {
+            console.error("Error updating student:", err);
+            res.status(500).send("There was an error updating the student.");
+        });
 });
 
 // Handle 404 - No Matching Route
 app.use((req, res) => {
-    res.status(404).render("404"); // Ensure you have a `404.ejs` file in `views`
+    res.status(404).render("404");
 });
 
 // Start Server After Initializing Data
